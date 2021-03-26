@@ -10,8 +10,17 @@ RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         wget && \
-    wget -q -P /tmp https://github.com/roundcube/roundcubemail/releases/download/$VERSION/roundcubemail-$VERSION-complete.tar.gz && \
-    tar -xzf /tmp/roundcubemail-$VERSION-complete.tar.gz -C /tmp
+    wget \
+        --quiet \
+        --directory-prefix /tmp \
+        https://github.com/roundcube/roundcubemail/releases/download/$VERSION/roundcubemail-$VERSION-complete.tar.gz && \
+    tar \
+        --extract \
+        --ungzip \
+        --directory /tmp \
+        --file /tmp/roundcubemail-$VERSION-complete.tar.gz && \
+    mkdir --parents /var/www/roundcube && \
+    cp --recursive /tmp/roundcubemail-$VERSION /var/www/roundcube
 
 
 # NGINX
@@ -22,8 +31,12 @@ RUN apt-get update -y && \
         lsb-release && \
     echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
         | tee /etc/apt/sources.list.d/nginx.list && \
-    wget -q -P /tmp https://nginx.org/keys/nginx_signing.key && \
+    wget \
+        --quiet \
+        --directory-prefix /tmp \
+        https://nginx.org/keys/nginx_signing.key && \
     mv /tmp/nginx_signing.key /etc/apt/trusted.gpg.d/nginx_signing.asc && \
     apt-get update -y && \
     apt-get install nginx
 
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
