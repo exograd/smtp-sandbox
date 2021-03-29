@@ -21,10 +21,13 @@ LABEL maintainer "Bryan Frimin <bryan@frimin.fr>"
 ENV VERSION "1.4.11"
 
 # Roundcube
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
+RUN apt-get update --yes && \
+    apt-get upgrade --yes && \
+    apt-get install --yes --no-install-recommends \
         ca-certificates \
+        gnupg2 \
+        php7.0-fpm php7.0 php7.0-xml php7.0-mbstring php7.0-intl 
+
         wget && \
     wget \
         --quiet \
@@ -38,21 +41,15 @@ RUN apt-get update -y && \
     mkdir --parents /var/www/roundcube && \
     cp --recursive /tmp/roundcubemail-$VERSION /var/www/roundcube
 
-
 # NGINX
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
-        gnupg2 \
-        lsb-release && \
-    echo "deb http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
+RUN echo "deb http://nginx.org/packages/ubuntu focal nginx" \
         | tee /etc/apt/sources.list.d/nginx.list && \
     wget \
         --quiet \
         --directory-prefix /tmp \
         https://nginx.org/keys/nginx_signing.key && \
     mv /tmp/nginx_signing.key /etc/apt/trusted.gpg.d/nginx_signing.asc && \
-    apt-get update -y && \
+    apt-get update --yes && \
     apt-get install nginx
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
