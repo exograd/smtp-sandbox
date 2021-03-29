@@ -34,7 +34,7 @@ RUN apt-get update --yes && \
         zlib1g-dev \
         wget \
         ca-certificates && \
-    mkdir --parents /var/lib/opensmtpd/empty && \
+    mkdir --parents /var/empty && \
     useradd _smtpd \
         --home-dir /var/lib/opensmtpd/empty \
         --no-create-home \
@@ -43,9 +43,10 @@ RUN apt-get update --yes && \
         --home-dir /var/lib/opensmtpd/empty \
         --no-create-home \
         --shell /bin/false && \
-    mkdir -p /var/spool/smtpd \
-             /var/mail \
-             /etc/mail && \
+    mkdir --parents \
+        /var/spool/smtpd \
+        /var/mail \
+        /etc/mail && \
     chmod 711 /var/spool/smtpd && \
     wget \
         --quiet \
@@ -59,8 +60,17 @@ RUN apt-get update --yes && \
     cd /tmp/OpenSMTPD-$VERSION && \
     ./bootstrap && \
     ./configure \
+        --prefix=/usr \
+        --sbindir=/usr/bin \
+        --sysconfdir=/usr/etc/mail \
+        --libexecdir=/usr/lib/smtpd \
+        --with-path-mbox=/var/spool/mail \
+        --with-path-empty=/var/empty \
+        --with-path-socket=/run \
+        --with-user-smtpd=_smtpd \
+        --with-user-queue=_smtpq \
+        --with-group-queue=_smtpq \
         --with-gnu-ld \
-        --sysconfdir=/etc/mail \
         --with-auth-pam && \
     make && \
     make install && \
@@ -76,5 +86,7 @@ RUN apt-get update --yes && \
         wget autoconf automake && \
     apt-get autoremove --yes && \
     apt-get clean --yes
+
+COPY smtpd.conf /usr/etc/mail/smtpd.conf
 
 CMD ["smtpd", "-dv"]
