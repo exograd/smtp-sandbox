@@ -20,9 +20,9 @@ LABEL maintainer "Bryan Frimin <bryan@frimin.fr>"
 
 ENV VERSION "6.8.0p2"
 
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
+RUN apt-get update --yes && \
+    apt-get upgrade --yes && \
+    apt-get install --yes --no-install-recommends \
         autoconf \
         automake \
         bison \
@@ -34,7 +34,7 @@ RUN apt-get update -y && \
         zlib1g-dev \
         wget \
         ca-certificates && \
-    mkdir -p /var/lib/opensmtpd/empty && \
+    mkdir --parents /var/lib/opensmtpd/empty && \
     useradd _smtpd \
         --home-dir /var/lib/opensmtpd/empty \
         --no-create-home \
@@ -47,13 +47,34 @@ RUN apt-get update -y && \
              /var/mail \
              /etc/mail && \
     chmod 711 /var/spool/smtpd && \
-    wget -q -P /tmp/ https://github.com/OpenSMTPD/OpenSMTPD/archive/refs/tags/v$VERSION.tar.gz && \
-    tar -xzf /tmp/v$VERSION.tar.gz -C /tmp && \
+    wget \
+        --quiet \
+        --directory-prefix /tmp/ \
+        https://github.com/OpenSMTPD/OpenSMTPD/archive/refs/tags/v$VERSION.tar.gz && \
+    tar \
+        --extract \
+        --ungzip \
+        --directory /tmp \
+        --file /tmp/v$VERSION.tar.gz && \
     cd /tmp/OpenSMTPD-$VERSION && \
     ./bootstrap && \
-    ./configure --with-gnu-ld \
-                --sysconfdir=/etc/mail \
-                --with-auth-pam && \
+    ./configure \
+        --with-gnu-ld \
+        --sysconfdir=/etc/mail \
+        --with-auth-pam && \
     make && \
     make install && \
-    cp etc/aliases /etc/mail/aliases
+    cp etc/aliases /etc/mail/aliases && \
+    rm \
+        --recursive \
+        --force \
+        /tmp/v$VERSION.tar.gz /tmp/OpenSMTPD-$VERSION && \
+    apt-get remove \
+        --purge \
+        --yes \
+        --allow-remove-essential \
+        wget autoconf automake && \
+    apt-get autoremove --yes && \
+    apt-get clean --yes
+
+CMD ["smtpd", "-dv"]
