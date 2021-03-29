@@ -7,4 +7,11 @@ services:
         published: 8080
         protocol: "tcp"
         mode: "host"
+  opensmtpd:
+    build: "./opensmtpd"
+    ports:
+      - target: 25
+        published: 2525
+        protocol: "tcp"
+        mode: "host"
         
