@@ -1,9 +1,10 @@
 version: "3.9"
 services:
-  nginx:
+  roundcube:
     image: "roundcube/roundcubemail:latest"
     ports:
       - target: 80
         published: 8080
         protocol: "tcp"
         mode: "host"
+        
