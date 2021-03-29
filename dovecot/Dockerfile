@@ -31,3 +31,5 @@ RUN apt-get update -y && \
         dovecot-imapd \
         dovecot-sieve \
         dovecot-lmtpd
+
+CMD ["dovecot", "-F"]
