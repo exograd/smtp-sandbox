@@ -14,4 +14,6 @@ services:
         published: 2525
         protocol: "tcp"
         mode: "host"
+  dovecot:
+    build: "./dovecot"
         
