@@ -29,7 +29,10 @@ RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
         dovecot-core \
         dovecot-imapd \
+        dovecot-pop3d \
         dovecot-sieve \
-        dovecot-lmtpd
+        dovecot-managesieved \
+        dovecot-lmtpd \
+        dovecot-pgsql
 
 CMD ["dovecot", "-F"]
