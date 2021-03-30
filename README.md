@@ -1,6 +1,5 @@
 # Introduction
-This repository contains a complete E-Mail infrastructure to easly test
-E-Mail part of any application.
+This repository contains a complete fake E-Mail infrastructure.
 
 # Contact
 If you find a bug or have any question, feel free to open a Github issue
