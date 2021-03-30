@@ -62,7 +62,7 @@ RUN apt-get update --yes && \
     ./configure \
         --prefix=/usr \
         --sbindir=/usr/bin \
-        --sysconfdir=/usr/etc/mail \
+        --sysconfdir=/etc/opensmtpd \
         --libexecdir=/usr/lib/smtpd \
         --with-path-mbox=/var/spool/mail \
         --with-path-empty=/var/empty \
@@ -87,6 +87,8 @@ RUN apt-get update --yes && \
     apt-get autoremove --yes && \
     apt-get clean --yes
 
-COPY smtpd.conf /usr/etc/mail/smtpd.conf
+EXPOSE 25
+EXPOSE 465
+EXPOSE 587
 
-CMD ["smtpd", "-dv"]
+CMD ["smtpd", "-d"]

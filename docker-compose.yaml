@@ -11,7 +11,10 @@ services:
     build: "./dovecot"
     volumes:
       - "./docker-compose/dovecot:/etc/dovecot:ro"
-    environment: {}
+  opensmtpd:
+    build: "./opensmtpd"
+    volumes:
+      - "./docker-compose/opensmtpd:/etc/opensmtpd:ro"
   roundcube:
     image: "roundcube/roundcubemail:latest"
     ports:
