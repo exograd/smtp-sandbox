@@ -7,6 +7,11 @@ services:
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
+  dovecot:
+    build: "./dovecot"
+    volumes:
+      - "./docker-compose/dovecot:/etc/dovecot:ro"
+    environment: {}
   roundcube:
     image: "roundcube/roundcubemail:latest"
     ports:
@@ -22,10 +27,8 @@ services:
       ROUNDCUBEMAIL_DB_PASSWORD: "postgres"
       ROUNDCUBEMAIL_DB_NAME: "roundcube"
       ROUNDCUBEMAIL_SKIN: "elastic"
-      ROUNDCUBEMAIL_DEFAULT_HOST: "tls://mail.example.org"
+      ROUNDCUBEMAIL_DEFAULT_HOST: "dovecot"
       ROUNDCUBEMAIL_SMTP_SERVER: "tls://mail.example.org"
     depends_on:
       - "postgres"
-
-
-
+      - "dovecot"
