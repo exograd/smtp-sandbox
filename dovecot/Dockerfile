@@ -33,6 +33,13 @@ RUN apt-get update -y && \
         dovecot-sieve \
         dovecot-managesieved \
         dovecot-lmtpd \
-        dovecot-pgsql
+        dovecot-pgsql && \
+    apt-get remove \
+        --purge \
+        --yes \
+        --allow-remove-essential \
+        gnupg curl && \
+    apt-get autoremove --yes && \
+    apt-get clean --yes
 
 CMD ["dovecot", "-F"]
