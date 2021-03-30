@@ -19,3 +19,6 @@ start:
 
 stop:
 	docker-compose down --remove-orphans
+
+config:
+	docker-compose config
