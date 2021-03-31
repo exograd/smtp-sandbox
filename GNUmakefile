@@ -28,3 +28,5 @@ ps:
 
 validate:
 	docker-compose config
+
+.PHONY: start stop build ps validate
