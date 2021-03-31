@@ -42,4 +42,7 @@ RUN apt-get update -y && \
     apt-get autoremove --yes && \
     apt-get clean --yes
 
+EXPOSE 143
+EXPOSE 110
+
 CMD ["dovecot", "-F"]
