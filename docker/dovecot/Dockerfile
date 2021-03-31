@@ -40,7 +40,11 @@ RUN apt-get update -y && \
         --allow-remove-essential \
         gnupg curl && \
     apt-get autoremove --yes && \
-    apt-get clean --yes
+    apt-get clean --yes && \
+    useradd vmail \
+        --create-home \
+        --home-dir /var/vmail \
+        --shell /sbin/nologin
 
 EXPOSE 143
 EXPOSE 110
