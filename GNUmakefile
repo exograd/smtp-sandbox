@@ -23,5 +23,8 @@ stop:
 build:
 	docker-compose build --quiet
 
+ps:
+	docker-compose ps
+
 config:
 	docker-compose config
