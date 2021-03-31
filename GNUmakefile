@@ -20,5 +20,8 @@ start:
 stop:
 	docker-compose down --remove-orphans
 
+build:
+	docker-compose build --quiet
+
 config:
 	docker-compose config
