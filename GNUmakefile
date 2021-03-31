@@ -26,5 +26,5 @@ build:
 ps:
 	docker-compose ps
 
-config:
+validate:
 	docker-compose config
