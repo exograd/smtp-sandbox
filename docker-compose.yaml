@@ -8,11 +8,11 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
   dovecot:
-    build: "./dovecot"
+    build: "./docker/dovecot"
     volumes:
       - "./docker-compose/dovecot:/etc/dovecot:ro"
   opensmtpd:
-    build: "./opensmtpd"
+    build: "./docker/opensmtpd"
     volumes:
       - "./docker-compose/opensmtpd:/etc/opensmtpd:ro"
   roundcube:
