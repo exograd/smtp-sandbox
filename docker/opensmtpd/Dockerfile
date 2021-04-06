@@ -32,6 +32,7 @@ RUN apt-get update --yes && \
         libtool \
         libpam0g-dev \
         zlib1g-dev \
+        libpq-dev \
         wget \
         ca-certificates && \
     mkdir --parents /var/empty && \
@@ -78,7 +79,36 @@ RUN apt-get update --yes && \
     rm \
         --recursive \
         --force \
-        /tmp/v$VERSION.tar.gz /tmp/OpenSMTPD-$VERSION && \
+        /tmp/v$VERSION.tar.gz /tmp/OpenSMTPD-$VERSION
+
+RUN \
+    wget \
+        --quiet \
+        --directory-prefix /tmp/ \
+        https://github.com/OpenSMTPD/OpenSMTPD-extras/releases/download/6.7.1/opensmtpd-extras-6.7.1.tar.gz && \
+    tar \
+        --extract \
+        --ungzip \
+        --directory /tmp \
+        --file /tmp/opensmtpd-extras-6.7.1.tar.gz && \
+    cd /tmp/opensmtpd-extras-6.7.1 && \
+    ./bootstrap && \
+    ./configure \
+        --prefix=/usr \
+        --sbindir=/usr/bin \
+        --sysconfdir=/etc/opensmtpd \
+        --libexecdir=/usr/lib/smtpd \
+        --with-path-empty=/var/empty \
+        --with-gnu-ld \
+        --with-table-postgres && \
+    make && \
+    make install && \
+    rm \
+        --recursive \
+        --force \
+        /tmp/opensmtpd-extras-6.7.1.tar.gz /tmp/opensmtpd-extras-6.7.1
+
+RUN \
     apt-get remove \
         --purge \
         --yes \
