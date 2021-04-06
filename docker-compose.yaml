@@ -15,6 +15,11 @@ services:
     build: "./docker/opensmtpd"
     volumes:
       - "./docker-compose/opensmtpd:/etc/opensmtpd:ro"
+    ports:
+      - target: 25
+        published: 25
+        protocol: "tcp"
+        mode: "host"
   roundcube:
     image: "roundcube/roundcubemail:latest"
     ports:
