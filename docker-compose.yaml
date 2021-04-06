@@ -11,6 +11,8 @@ services:
     build: "./docker/dovecot"
     volumes:
       - "./docker-compose/dovecot:/etc/dovecot:ro"
+    depends_on:
+      - "postgres"
   opensmtpd:
     build: "./docker/opensmtpd"
     volumes:
