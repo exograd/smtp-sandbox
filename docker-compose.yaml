@@ -17,6 +17,8 @@ services:
     build: "./docker/opensmtpd"
     volumes:
       - "./docker-compose/opensmtpd:/etc/opensmtpd:ro"
+    depends_on:
+      - "postgres"
     ports:
       - target: 25
         published: 25
