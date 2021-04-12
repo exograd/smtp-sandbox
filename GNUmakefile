@@ -14,19 +14,24 @@
 # TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 # PERFORMANCE OF THIS SOFTWARE.
 
+DC = docker-compose
+
 start:
-	docker-compose up --detach --no-color --build
+	$(DC) up --detach --no-color --build
 
 stop:
-	docker-compose down --remove-orphans
+	$(DC) down --remove-orphans
 
 build:
-	docker-compose build --quiet
+	$(DC) build --quiet
 
 ps:
-	docker-compose ps
+	$(DC) ps
 
 validate:
-	docker-compose config
+	$(DC) config
 
-.PHONY: start stop build ps validate
+psql:
+	$(DC) exec postgres psql -Upostgres
+
+.PHONY: start stop build ps validate psql
